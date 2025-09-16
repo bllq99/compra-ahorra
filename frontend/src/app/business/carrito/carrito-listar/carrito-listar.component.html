@@ -1,0 +1,112 @@
+<header class="relative bg-white">
+    <p
+        class="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+        Envio Gratis por tiempo limitado</p>
+    <!---------------------------------------------- MOBILE END MENU ---------------------------------------------------------->
+
+
+    <nav aria-label="Top" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="border-b border-gray-200">
+            <div class="flex h-16 items-center">
+
+                <!-- Logo -->
+                <div class="ml-4 flex lg:ml-0">
+                    <div>
+                        <span class="sr-only">Compra&Ahorra</span>
+                        <img class="h-8 w-auto"
+                            src="https://cdn-icons-png.flaticon.com/512/1590/1590704.png"
+                            alt="">
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold tracking-tight text-gray-900">Compra&Ahorra</h2>
+
+                <div class="ml-auto flex items-center">
+                    <button (click)="logout()" 
+                            class="text-gray-600 hover:text-gray-800 px-4 py-2 rounded-md">
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-8">Tu Carrito de Compras</h1>
+
+    @if (listCarrito.length === 0) {
+        <div class="text-center py-8">
+            <p class="text-gray-500">Tu carrito está vacío</p>
+            <a routerLink="/products" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">
+                Continuar comprando
+            </a>
+        </div>
+    } @else {
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Lista de productos -->
+            <div class="md:w-2/3">
+                @for(item of listCarrito; track item.producto) {
+                    <div class="flex items-center border-b border-gray-200 py-4">
+                        <img [src]="item.producto.image_url" [alt]="item.producto.name" 
+                             class="w-24 h-24 object-cover rounded">
+                        
+                        <div class="ml-4 flex-grow">
+                            <h3 class="text-lg font-medium">{{item.producto.name}}</h3>
+                            <p class="text-gray-600">{{item.producto.category}}</p>
+                            
+                            <div class="flex items-center mt-2">
+                                <button (click)="actualizarCantidad(item, -1)" 
+                                        class="text-gray-500 hover:text-gray-700">
+                                    <span class="text-2xl">-</span>
+                                </button>
+                                <span class="mx-4">{{item.cantidad}}</span>
+                                <button (click)="actualizarCantidad(item, 1)" 
+                                        class="text-gray-500 hover:text-gray-700">
+                                    <span class="text-2xl">+</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="ml-4">
+                            <p class="text-lg font-medium">${{item.producto.price * item.cantidad}}</p>
+                            <button (click)="eliminarProducto(item)" 
+                                    class="text-red-600 hover:text-red-800 mt-2">
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Resumen del pedido -->
+            <div class="md:w-1/3">
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h2 class="text-lg font-medium mb-4">Resumen del Pedido</h2>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span>${{calcularSubtotal()}}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Envío</span>
+                            <span>Gratis</span>
+                        </div>
+                        <div class="border-t pt-2 mt-2">
+                            <div class="flex justify-between font-medium">
+                                <span>Total</span>
+                                <span>${{calcularSubtotal()}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md 
+                                 hover:bg-indigo-700 transition-colors mt-4">
+                        Proceder al Pago
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
